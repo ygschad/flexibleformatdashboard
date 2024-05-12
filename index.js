@@ -1,14 +1,14 @@
-function findRedundantConnection(edges) {
-  const parent = new Array(edges.length + 1).fill(-1);
-  for (const edge of edges) {
-    const u = find(parent, edge[0]);
-    const v = find(parent, edge[1]);
-    if (u === v) return edge;
-    parent[u] = v;
+function maxEnvelopes(envelopes) {
+  envelopes.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
+  const dp = new Array(envelopes.length).fill(1);
+  let max = 1;
+  for (let i = 1; i < envelopes.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (envelopes[i][1] > envelopes[j][1]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+        max = Math.max(max, dp[i]);
+      }
+    }
   }
-  return [];
-}
-function find(parent, i) {
-  if (parent[i] === -1) return i;
-  return find(parent, parent[i]);
+  return max;
 }
